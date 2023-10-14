@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+
+void Binary(int length,int A[]) {
+    
+    if (length < 1) {
+        for (int i = 0; i < 5; i++) {
+            cout << A[i] << " ";
+        }
+        cout << endl;
+    }
+    else {
+        A[length - 1] = 1;
+        Binary(length - 1, A);
+        A[length - 1] = 0;
+        Binary(length - 1, A);
+    }
+}
+
+int main()
+{
+    int k = 5;
+    int *A = new int[k];
+    Binary(k, A);
+}
