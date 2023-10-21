@@ -1,1 +1,120 @@
+#include <iostream>
+using namespace std;
 
+struct Node{
+    int data;
+    Node * next;
+    Node * pre;
+};
+
+/*傳雙重指標是為了在主程式中也要改變head所指向的東西*/
+void doubleLinkedListInsert(Node ** head,int pos,int data){
+    
+    struct Node * temp;
+    Node * newNode = new Node();
+    newNode->data=data;
+    temp=*head;
+    int k=1;
+    
+    // cout<<"s"<<pos<<"s"<<endl;
+    
+    //若head節點還沒new空間時
+    if(!temp){
+        *head=newNode;
+        return;
+    }
+    
+    //若插入位置為1
+    if(pos==1){
+        newNode->next=temp;
+        temp->pre=newNode;
+        *head=newNode;
+        return;
+    }
+    else{
+        
+        //若插入在最後面時，必須到達最後節點的後面一個
+        while((k<pos) && temp!=NULL){
+            k++;
+            temp=temp->next;
+        }
+        
+        // if(!temp){
+        //     temp->next=newNode;
+        //     newNode->pre=temp;
+        //     newNode->next=NULL;
+        // }else{
+        //     newNode->pre=temp->pre;
+        //     temp->pre->next=newNode;
+        //     newNode->next=temp;
+        //     temp->pre=newNode;
+        // }
+        newNode->pre=temp->pre;
+        temp->pre->next=newNode;
+        newNode->next=temp;
+        temp->pre=newNode;
+    }
+    
+}
+
+void doubleLinkedListDelete(Node ** head,int pos){
+    
+    struct Node * temp;
+    temp=*head;
+    int k=1;
+    
+    if(pos==1){
+        temp=temp->next;
+        *head=temp;
+        return;
+    }else{
+        
+        while((k<pos)&&temp!=NULL){
+            k++;
+            temp=temp->next;
+        }
+        
+        temp->pre->next=temp->next;
+        temp->next->pre=temp->pre;
+        
+    }
+}
+
+
+
+int main()
+{
+    
+    Node * head;
+    doubleLinkedListInsert(&head,1,1);
+    doubleLinkedListInsert(&head,1,2);
+    doubleLinkedListInsert(&head,1,3);
+    doubleLinkedListInsert(&head,1,4);
+    doubleLinkedListInsert(&head,3,5);
+    
+    doubleLinkedListDelete(&head,4);
+    
+    // head->data=1;
+    
+    // Node * head1=new Node();
+    // head1->data=2;
+    
+    // Node * head2=new Node();
+    // head2->data=3;
+    
+    // head->next=head1;
+    // head1->next=head2;
+    
+    // cout<<head<<"ssss"<<endl;
+    // singleLinkedList(&head,4,5);
+    // cout<<head<<"aaaa"<<endl;
+    // cout<<head->data<<"bbbb"<<endl;
+    
+    while(head){
+        cout<<head->data<<endl;
+        head=head->next;
+    }
+    
+    
+    return 0;
+}
