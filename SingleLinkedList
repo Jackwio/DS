@@ -47,7 +47,7 @@ void singleLinkedList(Node ** head,int pos,int data){
 
 void deleteList(Node ** head,int pos){
     
-    struct Node * temp;
+    struct Node * temp,* cur;
     temp=*head;
     int k=1;
     
@@ -59,11 +59,15 @@ void deleteList(Node ** head,int pos){
         
         while((k<pos)&&temp!=NULL){
             k++;
+            cur=temp;
             temp=temp->next;
         }
         
         if(temp->next){
-            
+            cur->next=temp->next;
+        }
+        else{
+            cur->next=NULL;
         }
     }
 }
@@ -79,7 +83,7 @@ int main()
     singleLinkedList(&head,1,3);
     singleLinkedList(&head,1,4);
     
-    deleteList(&head,1);
+    deleteList(&head,4);
     
     // head->data=1;
     
