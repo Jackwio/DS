@@ -1,0 +1,121 @@
+#include <iostream>
+using namespace std;
+
+struct Node{
+    int data;
+    Node * next;
+};
+
+/*傳雙重指標是為了在主程式中也要改變head所指向的東西*/
+void circleLinkedListInsert(Node ** head,int data){
+    
+    struct Node * temp,* pre,* cur ,* last;
+
+    Node * newNode = new Node();
+    newNode->data=data;
+    newNode->next=newNode;
+    temp=*head;
+    
+    //若head節點還沒new空間時
+    if(!temp){
+        *head=newNode;
+        return;
+    }
+    
+    do{
+        cur=cur->next;
+        last=cur;
+    }while(cur->next!=*head);
+    
+    do{
+        if(data<temp->data){
+            if(!pre){
+                last->next=newNode;
+                newNode->next=temp;
+            }else{
+                pre->next=newNode;
+                newNode->next=temp;
+            }
+            break;
+        }
+        
+        if(temp->next==*head && temp->data<data){
+            last->next=newNode;
+            newNode->next=temp;
+            break;
+        }
+        pre=temp;
+        temp=temp->next;
+    }while(temp!=*head);
+    
+    
+    
+}
+
+void singleLinkedListDelete(Node ** head,int pos){
+    
+    struct Node * temp,* cur;
+    temp=*head;
+    int k=1;
+    
+    if(pos==1){
+        temp=temp->next;
+        *head=temp;
+        return;
+    }else{
+        
+        while((k<pos)&&temp!=NULL){
+            k++;
+            cur=temp;
+            temp=temp->next;
+        }
+        
+        if(temp->next){
+            cur->next=temp->next;
+        }
+        else{
+            cur->next=NULL;
+        }
+    }
+}
+
+
+
+int main()
+{
+    
+    Node * head;
+    circleLinkedListInsert(&head,2);
+    circleLinkedListInsert(&head,4);
+    circleLinkedListInsert(&head,3);
+    circleLinkedListInsert(&head,5);
+    circleLinkedListInsert(&head,1);
+    
+    // singleLinkedListDelete(&head,4);
+    
+    // head->data=1;
+    
+    // Node * head1=new Node();
+    // head1->data=2;
+    
+    // Node * head2=new Node();
+    // head2->data=3;
+    
+    // head->next=head1;
+    // head1->next=head2;
+    
+    // cout<<head<<"ssss"<<endl;
+    // singleLinkedList(&head,4,5);
+    // cout<<head<<"aaaa"<<endl;
+    // cout<<head->data<<"bbbb"<<endl;
+    
+    Node * cur=head;
+    
+    do{
+        cout<<cur->data;
+        cur=cur->next;
+    }while(cur!=head);
+    
+    
+    return 0;
+}
