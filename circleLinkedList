@@ -8,13 +8,13 @@ struct Node{
 
 /*傳雙重指標是為了在主程式中也要改變head所指向的東西*/
 void circleLinkedListInsert(Node ** head,int data){
-    
     struct Node * temp,* pre,* cur ,* last;
 
     Node * newNode = new Node();
     newNode->data=data;
     newNode->next=newNode;
     temp=*head;
+    cur=*head;
     
     //若head節點還沒new空間時
     if(!temp){
@@ -25,7 +25,7 @@ void circleLinkedListInsert(Node ** head,int data){
     do{
         cur=cur->next;
         last=cur;
-    }while(cur->next!=*head);
+    }while(cur->next!=(*head));
     
     do{
         if(data<temp->data){
@@ -39,14 +39,14 @@ void circleLinkedListInsert(Node ** head,int data){
             break;
         }
         
-        if(temp->next==*head && temp->data<data){
+        if(temp->next==(*head) && temp->data<data){
             last->next=newNode;
             newNode->next=temp;
             break;
         }
         pre=temp;
         temp=temp->next;
-    }while(temp!=*head);
+    }while(temp!=(*head));
     
     
     
@@ -89,7 +89,7 @@ int main()
     circleLinkedListInsert(&head,4);
     circleLinkedListInsert(&head,3);
     circleLinkedListInsert(&head,5);
-    circleLinkedListInsert(&head,1);
+    // circleLinkedListInsert(&head,1);
     
     // singleLinkedListDelete(&head,4);
     
