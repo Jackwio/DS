@@ -10,7 +10,7 @@ struct Node{
 
 /*傳雙重指標是為了在主程式中也要改變head所指向的東西*/
 void circleLinkedListInsert(Node ** head,int data){
-    struct Node * temp,* pre,* cur ,* last;
+    Node * temp,* pre,* cur ,* last;
 
     Node * newNode = new Node();
     newNode->data=data;
@@ -29,16 +29,17 @@ void circleLinkedListInsert(Node ** head,int data){
         last=cur;
     }while(cur->next!=(*head));
     
+    pre=last;
+    
     do{
+        // cout<<pre<<endl;
         if(data<temp->data){
-            if(last->next==temp){
-                last->next=newNode;
-                newNode->next=temp;
+            // 如果當前為頭節點，直接更新頭解點
+            if(temp==(*head)){
                 *head=newNode;
-            }else{
-                pre->next=newNode;
-                newNode->next=temp;
             }
+            pre->next=newNode;
+            newNode->next=temp;
             break;
         }
         
@@ -56,7 +57,7 @@ void circleLinkedListInsert(Node ** head,int data){
 
 void circleLinkedListDelete(Node ** head,int data){
     
-    struct Node * temp,* cur,* last,*pre;
+    Node * temp,* cur,* last,*pre;
     temp=*head;
     cur=*head;
     
@@ -67,6 +68,7 @@ void circleLinkedListDelete(Node ** head,int data){
     
     while(true){
         if(cur->data==data){
+            //第一個節點就找到了，刪除並更新頭節點
             if(cur==(*head)){
                 last->next=cur->next;
                 *head=cur->next;
@@ -74,10 +76,17 @@ void circleLinkedListDelete(Node ** head,int data){
             else{
                 pre->next=cur->next;
             }
+            delete cur;
             break;
         }
         pre=cur;
         cur=cur->next;
+        
+        //循環一圈找不到要刪除的，直接跳出
+        if(cur==(*head)){
+            cout<<"delete fail"<<endl;
+            break;
+        }
     }
 }
 
@@ -85,31 +94,14 @@ void circleLinkedListDelete(Node ** head,int data){
 
 int main()
 {
-    
     Node * head;
     circleLinkedListInsert(&head,2);
     circleLinkedListInsert(&head,4);
     circleLinkedListInsert(&head,3);
     circleLinkedListInsert(&head,5);
+    // cout<<"ssss"<<endl;
     circleLinkedListInsert(&head,1);
-    
-    circleLinkedListDelete(&head,5);
-    
-    // head->data=1;
-    
-    // Node * head1=new Node();
-    // head1->data=2;
-    
-    // Node * head2=new Node();
-    // head2->data=3;
-    
-    // head->next=head1;
-    // head1->next=head2;
-    
-    // cout<<head<<"ssss"<<endl;
-    // singleLinkedList(&head,4,5);
-    // cout<<head<<"aaaa"<<endl;
-    // cout<<head->data<<"bbbb"<<endl;
+    circleLinkedListDelete(&head,6);
     
     Node * cur=head;
     
