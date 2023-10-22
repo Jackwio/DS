@@ -6,6 +6,8 @@ struct Node{
     Node * next;
 };
 
+
+
 /*傳雙重指標是為了在主程式中也要改變head所指向的東西*/
 void circleLinkedListInsert(Node ** head,int data){
     struct Node * temp,* pre,* cur ,* last;
@@ -29,9 +31,10 @@ void circleLinkedListInsert(Node ** head,int data){
     
     do{
         if(data<temp->data){
-            if(!pre){
+            if(last->next==temp){
                 last->next=newNode;
                 newNode->next=temp;
+                *head=newNode;
             }else{
                 pre->next=newNode;
                 newNode->next=temp;
@@ -40,42 +43,41 @@ void circleLinkedListInsert(Node ** head,int data){
         }
         
         if(temp->next==(*head) && temp->data<data){
-            last->next=newNode;
-            newNode->next=temp;
+            newNode->next=temp->next;
+            temp->next=newNode;
             break;
         }
+
         pre=temp;
         temp=temp->next;
     }while(temp!=(*head));
     
-    
-    
 }
 
-void singleLinkedListDelete(Node ** head,int pos){
+void circleLinkedListDelete(Node ** head,int data){
     
-    struct Node * temp,* cur;
+    struct Node * temp,* cur,* last,*pre;
     temp=*head;
-    int k=1;
+    cur=*head;
     
-    if(pos==1){
+    do{
         temp=temp->next;
-        *head=temp;
-        return;
-    }else{
-        
-        while((k<pos)&&temp!=NULL){
-            k++;
-            cur=temp;
-            temp=temp->next;
+        last=temp;
+    }while(temp->next!=(*head));
+    
+    while(true){
+        if(cur->data==data){
+            if(cur==(*head)){
+                last->next=cur->next;
+                *head=cur->next;
+            }
+            else{
+                pre->next=cur->next;
+            }
+            break;
         }
-        
-        if(temp->next){
-            cur->next=temp->next;
-        }
-        else{
-            cur->next=NULL;
-        }
+        pre=cur;
+        cur=cur->next;
     }
 }
 
@@ -89,9 +91,9 @@ int main()
     circleLinkedListInsert(&head,4);
     circleLinkedListInsert(&head,3);
     circleLinkedListInsert(&head,5);
-    // circleLinkedListInsert(&head,1);
+    circleLinkedListInsert(&head,1);
     
-    // singleLinkedListDelete(&head,4);
+    circleLinkedListDelete(&head,5);
     
     // head->data=1;
     
@@ -112,7 +114,7 @@ int main()
     Node * cur=head;
     
     do{
-        cout<<cur->data;
+        cout<<cur->data<<endl;
         cur=cur->next;
     }while(cur!=head);
     
