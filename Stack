@@ -1,0 +1,59 @@
+#include <iostream>
+using namespace std;
+
+//刪除stack失敗
+
+struct Stack{
+    int capacity;
+    int top;
+    int * array;
+};
+
+void createStack(int capacity,Stack ** s){
+    
+    Stack * temp=new Stack();
+    *s=temp;
+    temp->array=new int[capacity];
+    temp->top=-1;
+}
+
+void push(int data,Stack * s){
+    s->array[++s->top]=data;
+}
+
+int pop(Stack * s){
+    return s->array[(s->top)--];
+}
+
+int ifFull(Stack * s){
+    return (s->top)+1==s->capacity;
+}
+
+int ifEmpty(Stack * s){
+    return s->top==-1;
+}
+
+void deleteStack(Stack ** s){
+    delete[] (*s)->array;
+    delete *s;
+}
+
+int main()
+{
+    
+    Stack * s;
+    createStack(6,&s);
+    cout<<s<<"====";
+    cout<<s->top<<endl;
+    push(1,s);
+    push(2,s);
+    push(3,s);
+    pop(s);
+    cout<<s->array[s->top]<<endl;
+    cout<<"Hello World"<<endl;
+    
+    deleteStack(&s);
+    cout<<s<<"====";
+
+    return 0;
+}
