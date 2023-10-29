@@ -9,22 +9,6 @@ struct Stack{
     int * array;
 };
 
-void createStack(int capacity,Stack ** s){
-    
-    Stack * temp=new Stack();
-    *s=temp;
-    temp->array=new int[capacity];
-    temp->top=-1;
-}
-
-void push(int data,Stack * s){
-    s->array[++s->top]=data;
-}
-
-int pop(Stack * s){
-    return s->array[(s->top)--];
-}
-
 int ifFull(Stack * s){
     return (s->top)+1==s->capacity;
 }
@@ -33,27 +17,78 @@ int ifEmpty(Stack * s){
     return s->top==-1;
 }
 
-void deleteStack(Stack ** s){
-    delete[] (*s)->array;
-    delete *s;
+void createStack(int capacity,Stack ** s){
+    
+    Stack * temp=new Stack();
+    *s=temp;
+    temp->array=new int[capacity];
+    temp->top=-1;
+    temp->capacity=capacity;
+}
+
+void push(int data,Stack * s){
+    if(ifFull(s)){
+        return;
+    }
+    s->array[++s->top]=data;
+}
+
+int pop(Stack * s){
+    if(ifEmpty(s)){
+        return -1;
+    }
+    return s->array[(s->top)--];
+}
+
+
+
+// void deleteStack(Stack ** s){
+//     delete[] s->array;
+//     delete s;
+// }
+
+void doubleCapacity(Stack * s){
+    
+    int temp=s->capacity;
+    int * tempArr=new int[2*temp];
+    
+    for(int i=0;i<temp;i++){
+        tempArr[i]=(s->array)[i];
+    }
+    s->capacity=temp*2;
+    delete s->array;
+    s->array=tempArr;
+    
+}
+
+int top(Stack * s){
+    return s->array[s->top];
 }
 
 int main()
 {
     
     Stack * s;
-    createStack(6,&s);
-    cout<<s<<"====";
-    cout<<s->top<<endl;
+    createStack(3,&s);
+
     push(1,s);
     push(2,s);
     push(3,s);
-    pop(s);
+    doubleCapacity(s);
+    push(4,s);
+    
+    // pop(s);
+    
+    top(s);
     cout<<s->array[s->top]<<endl;
     cout<<"Hello World"<<endl;
     
-    deleteStack(&s);
-    cout<<s<<"====";
+    // deleteStack(s);
+    // cout<<s->array<<endl;
+    // cout<<s<<"====";
+    // doubleCapacity(s);
+    // pop(s);
+    // cout<<top(s);
 
     return 0;
 }
