@@ -1,0 +1,97 @@
+#include <iostream>
+using namespace std;
+
+struct Node{
+    int data;
+    Node * next;
+};
+
+struct Queue{
+    Node * front;
+    Node * rear;
+};
+
+int ifEmpty(Queue * q){
+    return q->front==NULL;
+}
+
+// 為了改變內部指的東西
+void createQueue(Queue ** q){
+    
+    *q=new Queue();
+    Node * rearNode=NULL;
+    Node * frontNode=NULL;
+    (*q)->front=frontNode;
+    (*q)->rear=rearNode;
+    
+}
+
+void EnQueue(int data,Queue ** q){
+
+    Node * newNode=new Node();
+    newNode->data=data;
+    if((*q)->rear){
+        (*q)->rear->next=newNode;
+    }
+    (*q)->rear=newNode;
+    if((*q)->front==NULL){
+        (*q)->front=(*q)->rear;
+    }
+}
+
+int deQueue(Queue ** q){
+    
+    if(ifEmpty(*q)) return -1;
+    
+    int data=(*q)->front->data;
+    Node * temp=(*q)->front;
+    (*q)->front=(*q)->front->next;
+    delete temp;
+    
+    return data;
+}
+
+//不能成功刪除
+void deleteQueue(Queue ** q){
+    Node * temp=(*q)->rear;
+    while(temp){
+        Node * r = temp;
+        temp=temp->next;
+        delete r;
+        
+    }
+    
+    delete q;
+}
+
+
+int main()
+{
+    
+    Queue * queue;
+    createQueue(&queue);
+
+    EnQueue(2,&queue);
+    EnQueue(3,&queue);
+    EnQueue(4,&queue);
+    deQueue(&queue);
+    deQueue(&queue);
+    EnQueue(5,&queue);
+    EnQueue(6,&queue);
+    EnQueue(7,&queue);
+    deQueue(&queue);
+    
+    while(true){
+        int data=deQueue(&queue);
+        if(data==-1){
+            break;
+        }
+        cout<<data<<endl;
+    }
+    
+    deleteQueue(&queue);
+    cout<<queue;
+    cout<<"ddd";
+
+    return 0;
+}
